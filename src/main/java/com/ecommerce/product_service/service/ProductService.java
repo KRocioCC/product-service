@@ -8,4 +8,7 @@ import java.util.List;
 public interface ProductService {
     ProductResponseDTO createProduct(ProductRequestDTO requestDTO);
     List<ProductResponseDTO> getAllProducts();
+    ProductResponseDTO getProductById(String id);
+    ProductResponseDTO updateProduct(String id, ProductRequestDTO productRequestDTO);
+    void deleteProduct(String id); //porque no retorna nada
 }

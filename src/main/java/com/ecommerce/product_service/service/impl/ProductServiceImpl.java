@@ -24,8 +24,8 @@ public class ProductServiceImpl  implements ProductService {
 
         //
         Product product = mapper.toProduct(requestDTO);
-        repository.save(product);
-        return mapper.toProductResponseDTO(product);
+        Product savedProduct = repository.save(product);
+        return mapper.toProductResponseDTO(savedProduct);
     }
 
     @Override
@@ -34,6 +34,31 @@ public class ProductServiceImpl  implements ProductService {
                 .stream()
                 .map(mapper::toProductResponseDTO)
                 .toList();
+    }
+
+    @Override
+    public ProductResponseDTO getProductById(String id) {
+        Product product = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Product not found with id: " + id));
+        return mapper.toProductResponseDTO(product);
+    }
+
+    @Override
+    public ProductResponseDTO updateProduct(String id, ProductRequestDTO productRequestDTO) {
+        Product product = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Product not found with id: " + id));
+        mapper.updateProductFromDTO(productRequestDTO, product);
+        Product updatedProduct = repository.save(product);
+        return mapper.toProductResponseDTO(updatedProduct);
+    }
+
+    @Override
+    public void deleteProduct(String id) {
+        if(!repository.existsById(id)) {
+            throw new RuntimeException("Product not found with id: " + id);
+        }
+        repository.deleteById(id);
+
     }
 
 
