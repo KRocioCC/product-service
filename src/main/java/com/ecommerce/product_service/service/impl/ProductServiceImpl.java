@@ -22,9 +22,13 @@ public class ProductServiceImpl  implements ProductService {
     @Override
     public ProductResponseDTO createProduct(ProductRequestDTO requestDTO) {
 
-        //
+        // Convertir DTO a Model
         Product product = mapper.toProduct(requestDTO);
+
+        // Guardar en Mongo (genera ID)
         Product savedProduct = repository.save(product);
+
+        // Convertir Model a DTO (con ID)
         return mapper.toProductResponseDTO(savedProduct);
     }
 
@@ -45,10 +49,17 @@ public class ProductServiceImpl  implements ProductService {
 
     @Override
     public ProductResponseDTO updateProduct(String id, ProductRequestDTO productRequestDTO) {
+        // Busca producto existente
         Product product = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Product not found with id: " + id));
+
+        // Actualizar con datos del DTO
         mapper.updateProductFromDTO(productRequestDTO, product);
+
+        // Guardar cambios
         Product updatedProduct = repository.save(product);
+
+        // Devolver como DTO
         return mapper.toProductResponseDTO(updatedProduct);
     }
 
