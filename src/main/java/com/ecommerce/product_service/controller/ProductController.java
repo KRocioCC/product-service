@@ -42,5 +42,10 @@ public class ProductController {
     public ProductResponseDTO updateProduct(@PathVariable String id, @RequestBody @Valid ProductRequestDTO productRequestDTO) {
         return productService.updateProduct(id, productRequestDTO);
     }
+
+    @GetMapping("/test-fail")
+    public void testFail() {
+        throw new RuntimeException("This is a test exception to demonstrate error handling.");
+    }
 }
 
