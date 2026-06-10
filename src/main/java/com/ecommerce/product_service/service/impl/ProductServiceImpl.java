@@ -58,8 +58,7 @@ public class ProductServiceImpl  implements ProductService {
                 .orElseThrow(() -> new ResourceNotFoundException("Producto","id", id));
 
         // Actualizar con datos del DTO
-        mapper.updateProductFromDTO(productRequestDTO, product);
-
+        mapper.updateProductFromRequest(productRequestDTO, product);
         // Guardar cambios
         Product updatedProduct = repository.save(product);
         log.info("Producto actualizado con ID: {}", updatedProduct.getName());
